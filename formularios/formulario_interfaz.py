@@ -3,6 +3,7 @@ from servicios.obtener_datos_api import ObtenerDatosApi
 from modelos.posts import Post
 from modelos.comments import Comment
 from servicios.crear_datos_api import CrearPostApi, CrearCommentApi
+from negocio.encriptacion import generar_clave, encriptar_contrasena, desencriptar_contrasena
 
 def menu ():
     print('Bienvenido')
@@ -33,3 +34,17 @@ def menu ():
         opcion_editar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\nIngrese el numero de la opcion: ')
     elif realizar == '4':
         opcion_eliminar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\nIngrese el numero de la opcion: ')
+        
+    elif realizar == '5':
+        clave = generar_clave()
+        contrasena = input('Ingrese la contraseña a encriptar: ')
+        print(f'Contraseña ingresada: {contrasena}')
+        
+        contrasena_encriptada = encriptar_contrasena(contrasena, clave)
+        print(f'Contraseña encriptada: {contrasena_encriptada}')
+        
+        contrasena_desencriptada = desencriptar_contrasena(contrasena_encriptada, clave)
+        if contrasena == contrasena_desencriptada:
+            print('La contraseña ha sido desencriptada correctamente y coincide con la original.')
+        else:
+            print('Error: La contraseña desencriptada no coincide con la original.')

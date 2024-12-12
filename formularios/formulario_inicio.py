@@ -1,21 +1,35 @@
 def iniciar_sesion():
-    from modelos.empleados import Empleados
-    from datos.consultas_db import DB_consulta_validar
+    from modelos.usuario import usuario
+    from datos.conect_db import config
+    from negocio.encriptacion import desencriptar_contrasena, encriptar_contrasena, generar_clave
     import getpass
 
+    
     print('--------------------------------------------\n|Bienvenido al sistema de EcoTech Solutions|\n--------------------------------------------\n\nIngrese sus credenciales: \n')
 
     rut = input('Rut (con guion y digito verificador): ')
-    query = "SELECT nombre_estado FROM empleados emp INNER JOIN estado est ON emp.estado = est.id_estado WHERE rut = %s;"
-    resultado = DB_consulta_validar(query,rut)
-    estado = resultado[0][0].strip().lower() if resultado else None
-    if estado == 'activo':
-        contrasena = getpass.getpass("Introduce tu contraseña: ")
-        if Empleados.validarDatos(rut,contrasena):
-            print('\nBienvenido')
-            interfaz(rut)
-            return
-    elif estado == "deshabilitado": 
-        print('Cuenta deshabilitada. ¡Actualice el estado, si se utilizara la cuenta!')
+    query = "SELECT contrasena_encriptada, nombre_estado FROM empleados emp INNER JOIN estado est ON emp.estado = est.id_estado WHERE rut = %s;"
+    resultado = config(query, rut)
+    
+    if resultado:
+        contrasena_encriptada = resultado[0][0]
+        estado = resultado[0][1].strip().lower()
+        
+        if estado == 'activo':
+            contrasena = getpass.getpass("Introduce tu contraseña: ")
+            clave = generar_clave()
+            contrasena_encriptada = encriptar_contrasena(contrasena, clave)
+            contrasena_desencriptada = desencriptar_contrasena(contrasena_encriptada, clave)
+            
+            if contrasena == contrasena_desencriptada:
+                print('\nBienvenido')
+                usuario(rut)
+                return
+            else:
+                print("Contraseña incorrecta.")
+        elif estado == "deshabilitado": 
+            print('Cuenta deshabilitada. ¡Actualice el estado, si se utilizara la cuenta!')
+        else:
+            print("¡Hasta luego!")
     else:
-        print("¡Hasta luego!")
+        print("Usuario no encontrado.")
