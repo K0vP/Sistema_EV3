@@ -4,10 +4,12 @@ from modelos.posts import Post
 from modelos.comments import Comment
 from servicios.crear_datos_api import CrearPostApi, CrearCommentApi
 from negocio.encriptacion import generar_clave, encriptar_contrasena, desencriptar_contrasena
+from servicios.consulta_api import buscar_en_serper
+import json
 
 def menu ():
     print('Bienvenido')
-    realizar = input('Que desea relaizar:\n1: Consultar\n2: Crear\n3: Editar\n4: Eliminar\nIngrese el numero de la opcion: ')
+    realizar = input('Que desea relaizar:\n1: Consultar\n2: Crear\n3: Editar\n4: Eliminar\n5: Encriptacion de contraseña\n6: Consulta API\nIngrese el numero de la opcion: ')
     if realizar == '1':
         opcion_consultar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\nIngrese el numero de la opcion: ')
         if opcion_consultar in visualizar:
@@ -43,8 +45,20 @@ def menu ():
         contrasena_encriptada = encriptar_contrasena(contrasena, clave)
         print(f'Contraseña encriptada: {contrasena_encriptada}')
         
+        print("Desencriptando la contraseña para comparar...")
         contrasena_desencriptada = desencriptar_contrasena(contrasena_encriptada, clave)
+        
+        print(f'Comparando contraseñas: \nOriginal: {contrasena} \nDesencriptada: {contrasena_desencriptada}')
         if contrasena == contrasena_desencriptada:
             print('La contraseña ha sido desencriptada correctamente y coincide con la original.')
         else:
             print('Error: La contraseña desencriptada no coincide con la original.')
+
+    elif realizar == '6':
+        query = input("Ingrese el string de búsqueda: ")  # Solicitar el string de búsqueda al usuario
+
+        resultados = buscar_en_serper(query)  # Realizar la búsqueda
+
+        if resultados:
+            print("Resultados de la búsqueda:")
+            print(json.dumps(resultados, indent=4))  # Imprimir los resultados de forma legible
