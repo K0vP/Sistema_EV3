@@ -2,7 +2,7 @@ CREATE TABLE usuarios (
     id_usuario INT PRIMARY KEY,
     rut INT,
     contrasena VARCHAR(60)
-)
+);
 
 CREATE TABLE usuarios_api(
     id_usuario_api int,
@@ -19,7 +19,7 @@ CREATE TABLE POSTS(
 CREATE TABLE COMMENTS(
     post_id INT,
     id INT,
-    nam VARCHAR(100),
+    name VARCHAR(100),
     email VARCHAR(40),
     body VARCHAR(100),
-)
+);

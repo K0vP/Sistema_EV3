@@ -1,10 +1,15 @@
 from auxiliares.constantes import visualizar
 from servicios.obtener_datos_api import ObtenerDatosApi
 from servicios.actualizar_datos_api import ActualizarDatosApi
+from negocio.negocio_subir_datos import subir_datos
+from datos.iniciar_db import iniciar_db
 def menu ():
     print('Bienvenido')
-    realizar = input('Que desea realizar:\n1: Consultar\n2: Crear\n3: Editar\n4: Eliminar\n5: salir\nIngrese el numero de la opcion: ')
-    if realizar == '1':
+    iniciar_db()
+    realizar = input('Que desea realizar:\n0: Cargar datos a la BD\n1: Consultar\n2: Crear\n3: Editar\n4: Eliminar\n5: salir\nIngrese el numero de la opcion: ')
+    if realizar == '0':
+        subir_datos()
+    elif realizar == '1':
         opcion_consultar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\n3: Volver al menu\nIngrese el numero de la opcion: ')
         if opcion_consultar in visualizar:
             print (f'Selecciono la opcion {visualizar[opcion_consultar]}:\n')
