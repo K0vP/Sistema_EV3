@@ -8,6 +8,7 @@ def ActualizarDatosApi(opcion,IdActualizar):
     try:
         respuesta = req.put(id_actualizar, json=dato)
         if respuesta.status_code == 200:
+            print (f"el codigo de la respuesta es {respuesta.status_code}")
             print("Datos actualizados")
     except:
         print(f"Error al obtener los datos, detalles:",respuesta.text)

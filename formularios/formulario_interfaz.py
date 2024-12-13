@@ -1,13 +1,15 @@
 from auxiliares.constantes import visualizar
+from datos.consulta_datos_cargados import DB_consulta
 from negocio.negocio_manejo_datos import Datos
 from servicios.obtener_datos_api import ObtenerDatosApi
 from servicios.actualizar_datos_api import ActualizarDatosApi
 from datos.iniciar_db import iniciar_db
-from modelos.posts import Post
-from modelos.comments import Comment
+from modelos.post import Post
+from modelos.comment import Comment
 from servicios.crear_datos_api import CrearPostApi, CrearCommentApi
 from negocio.encriptacion import generar_clave, encriptar_contrasena, desencriptar_contrasena
 from servicios.consulta_api import buscar_en_serper
+from servicios.delete_api import eliminar_registro_api
 import json
 def menu ():
     print('Bienvenido')
@@ -22,7 +24,7 @@ def menu ():
         opcion_consultar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\n3: Volver al menu\nIngrese el numero de la opcion: ')
         if opcion_consultar in visualizar:
             print (f'Selecciono la opcion {visualizar[opcion_consultar]}:\n')
-            ObtenerDatosApi(opcion_consultar)
+            DB_consulta(opcion_consultar)
         elif opcion_consultar == "3":
             menu()
             
@@ -52,9 +54,10 @@ def menu ():
         elif opcion_editar == "3":
             menu()
     elif realizar == '4':
-
         opcion_eliminar = input('Seleccione una de las siguintes opciones:\n1: Post\n2: Comments\n3: Volver al menu\nIngrese el numero de la opcion: ')
-       
+        if opcion_eliminar in visualizar:
+            print (f'Selecciono la opcion {visualizar[opcion_eliminar]}')
+            eliminar_registro_api(opcion_eliminar)
     elif realizar == '5':
         clave = generar_clave()
         contrasena = input('Ingrese la contraseña a encriptar: ')

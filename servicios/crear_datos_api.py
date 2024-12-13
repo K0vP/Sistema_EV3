@@ -8,6 +8,7 @@ def CrearPostApi(post):
     try:
         respuesta = req.post(url, headers=headers, json=data)
         if respuesta.status_code == 201:
+            print (f"el codigo de la respuesta es {respuesta.status_code}")
             print('Post creado con éxito!')
         else:
             print('Error al crear el post:', respuesta.text)
@@ -21,6 +22,7 @@ def CrearCommentApi(comment):
     try:
         respuesta = req.post(url, headers=headers, json=data)
         if respuesta.status_code == 201:
+            print (f"el codigo de la respuesta es {respuesta.status_code}")
             print('Comentario creado con éxito!')
         else:
             print('Error al crear el comentario:', respuesta.text)
